@@ -23,11 +23,21 @@ export interface TelemetriaLgpd {
   power_consumption: number;
 }
 
-/** ENDPOINT 4 — prever_picos_demanda */
-export interface PrevisaoPico {
-  status_infraestrutura: string;
-  media_watts_recente: number;
-  limiar_pico_watts: number;
+/** ENDPOINT — previsoes_energia (tabela SARIMAX) */
+export interface PrevisaoEnergia {
+  id: number;
+  horario_previsto: string;
+  potencia_prevista: number;
+  risco_pico: boolean;
+}
+
+/** KPIs derivados das previsões */
+export interface PrevisaoKpis {
+  mediaPotencia: number;
+  maxPotencia: number;
+  horarioPico: string;
+  totalRiscos: number;
+  proximaPrevisao: PrevisaoEnergia | null;
 }
 
 /** Estado global do dashboard */
@@ -35,5 +45,5 @@ export interface DashboardData {
   energiaTotal: EnergiaIntegral | null;
   esgDiario: EsgDiario[];
   telemetria: TelemetriaLgpd[];
-  previsao: PrevisaoPico | null;
+  previsoes: PrevisaoEnergia[];
 }

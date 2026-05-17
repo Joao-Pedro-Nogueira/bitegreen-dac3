@@ -7,7 +7,7 @@ import type {
   EnergiaIntegral,
   EsgDiario,
   TelemetriaLgpd,
-  PrevisaoPico,
+  PrevisaoEnergia,
 } from '../types';
 
 /** ENDPOINT 1 — Consumo global acumulado (Cálculo Integral) */
@@ -39,10 +39,13 @@ export async function fetchTelemetriaLgpd(): Promise<TelemetriaLgpd[]> {
   return (data ?? []) as TelemetriaLgpd[];
 }
 
-/** ENDPOINT 4 — Previsão preditiva de picos de demanda */
-export async function fetchPrevisaoPico(): Promise<PrevisaoPico> {
-  const { data, error } = await supabase.rpc('prever_picos_demanda', {});
-  if (error) throw new Error(`Erro ao buscar previsão de picos: ${error.message}`);
-  const result = Array.isArray(data) ? data[0] : data;
-  return result as PrevisaoPico;
+/** ENDPOINT — Previsões energéticas (tabela previsoes_energia via SARIMAX) */
+export async function fetchPrevisoes(): Promise<PrevisaoEnergia[]> {
+  const { data, error } = await supabase
+    .from('previsoes_energia')
+    .select('*')
+    .order('horario_previsto');
+
+  if (error) throw new Error(`Erro ao buscar previsões energéticas: ${error.message}`);
+  return (data ?? []) as PrevisaoEnergia[];
 }
