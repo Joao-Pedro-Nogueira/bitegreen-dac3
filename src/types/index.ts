@@ -40,6 +40,13 @@ export interface PrevisaoKpis {
   proximaPrevisao: PrevisaoEnergia | null;
 }
 
+/** Dados de previsão de pico de demanda */
+export interface PrevisaoPico {
+  status_infraestrutura: string;
+  media_watts_recente: number;
+  limiar_pico_watts: number;
+}
+
 /** Estado global do dashboard */
 export interface DashboardData {
   energiaTotal: EnergiaIntegral | null;
